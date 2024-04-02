@@ -26,9 +26,14 @@ class AccelPressureData(APIView):
         serializer = AccelPressureSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            append_to_csv("AccelPressureData.csv", serializer.validated_data)
+            # append_to_csv("AccelPressureData.csv", serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, *args, **kwargs):
+        pressures = Pressure_Accel.objects.all()
+        serializer = AccelPressureSerializer(pressures, many=True)
+        return Response(serializer.data)
 
 
 class BreakPressureData(APIView):
@@ -36,9 +41,14 @@ class BreakPressureData(APIView):
         serializer = BreakPressureSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            append_to_csv("BreakPressureData.csv", serializer.validated_data)
+            # append_to_csv("BreakPressureData.csv", serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, *args, **kwargs):
+        pressures = Pressure_Break.objects.all()
+        serializer = BreakPressureSerializer(pressures, many=True)
+        return Response(serializer.data)
 
 
 class SpeedData(APIView):
@@ -46,6 +56,11 @@ class SpeedData(APIView):
         serializer = SpeedSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            append_to_csv("SpeedData.csv", serializer.validated_data)
+            # append_to_csv("SpeedData.csv", serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, *args, **kwargs):
+        speeds = Speed.objects.all()
+        serializer = AccelPressureSerializer(speeds, many=True)
+        return Response(serializer.data)
