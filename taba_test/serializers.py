@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Pressure_Accel, Pressure_Break, Speed
+from .models import *
 
 
 class AccelPressureSerializer(serializers.ModelSerializer):
@@ -12,6 +12,12 @@ class BreakPressureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pressure_Break
         fields = ["id", "value", "timestamp"]
+
+
+class PressureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pressure
+        fields = ["id", "break_value", "accel_value", "timestamp"]
 
 
 class SpeedSerializer(serializers.ModelSerializer):
