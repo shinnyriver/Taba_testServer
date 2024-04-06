@@ -1,3 +1,4 @@
+from django.db.models import Max, Min
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -78,3 +79,35 @@ class SpeedData(APIView):
         speeds = Speed.objects.all()
         serializer = AccelPressureSerializer(speeds, many=True)
         return Response(serializer.data)
+
+
+class CalibrationData(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = CalibrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, *args, **kwargs):
+        data = Calibration.objects.all()
+        serializer = CalibrationSerializer(data, many=True)
+        return Response(serializer.data)
+
+
+class SensorCalibrationData(APIView):
+    def get(self, request, sensor_id):
+        aggregates = Calibration.objects.filter(sensor_id=sensor_id).aggregate(
+            Max('break_value'), Min('break_value'),
+            Max('accel_value'), Min('accel_value')
+        )
+
+        result = {
+            "sensor_id": sensor_id,
+            "break_max": aggregates['break_value__max'],
+            "break_min": aggregates['break_value__min'],
+            "accel_max": aggregates['accel_value__max'],
+            "accel_min": aggregates['accel_value__min'],
+        }
+
+        return Response(result)

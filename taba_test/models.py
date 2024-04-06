@@ -45,3 +45,12 @@ class Speed(models.Model):
 
     def __str__(self):
         return f"Speed {self.value} km/h at {self.timestamp}"
+
+
+class Calibration(models.Model):
+    sensor_id = models.IntegerField(help_text="Sensor Id")
+    break_value = models.FloatField(help_text="Break")
+    accel_value = models.FloatField(help_text="Accelerator")
+
+    def __str__(self):
+        return f"Break Pressure {self.break_value} Accel Pressure in Pa at {self.accel_value}"
