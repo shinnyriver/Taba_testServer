@@ -13,7 +13,7 @@ def append_to_csv(filename, data):
     file_path = Path(settings.BASE_DIR) / "data" / filename
     file_exists = file_path.is_file()
 
-    with open(file_path, mode="a", newline="") as csvfile:
+    with open(file_path, mode="a", newline="", encoding="utf-8") as csvfile:
         fieldnames = data.keys()
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
@@ -98,16 +98,18 @@ class CalibrationData(APIView):
 class SensorCalibrationData(APIView):
     def get(self, request, sensor_id):
         aggregates = Calibration.objects.filter(sensor_id=sensor_id).aggregate(
-            Max('break_value'), Min('break_value'),
-            Max('accel_value'), Min('accel_value')
+            Max("break_value"),
+            Min("break_value"),
+            Max("accel_value"),
+            Min("accel_value"),
         )
 
         result = {
             "sensor_id": sensor_id,
-            "break_max": aggregates['break_value__max'],
-            "break_min": aggregates['break_value__min'],
-            "accel_max": aggregates['accel_value__max'],
-            "accel_min": aggregates['accel_value__min'],
+            "break_max": aggregates["break_value__max"],
+            "break_min": aggregates["break_value__min"],
+            "accel_max": aggregates["accel_value__max"],
+            "accel_min": aggregates["accel_value__min"],
         }
 
         return Response(result)
