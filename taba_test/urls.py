@@ -1,10 +1,11 @@
 from django.urls import path
+
 from .views import (
     AccelPressureData,
     BreakPressureData,
     CalibrationData, SensorCalibrationData,
     SpeedData,
-    PressureData,
+    PressureData, TestsetData,
 )
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
         name="sensor-calibration-data",
     ),
     path("calibration/", CalibrationData.as_view()),
+    path("testdata/", TestsetData.as_view()),
 ]

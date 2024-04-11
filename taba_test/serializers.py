@@ -30,3 +30,8 @@ class CalibrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Calibration
         fields = ["id", "sensor_id", "break_value", "accel_value"]
+
+class TestsetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Testset
+        fields = ["id", "break_value", "accel_value", "speed", "timestamp"]
