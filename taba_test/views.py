@@ -1,4 +1,5 @@
 from django.db.models import Max, Min
+from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -28,7 +29,6 @@ class AccelPressureData(APIView):
         serializer = AccelPressureSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            # append_to_csv("AccelPressureData.csv", serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -43,7 +43,6 @@ class BreakPressureData(APIView):
         serializer = BreakPressureSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            # append_to_csv("BreakPressureData.csv", serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -72,7 +71,6 @@ class SpeedData(APIView):
         serializer = SpeedSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            # append_to_csv("SpeedData.csv", serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -128,3 +126,33 @@ class TestsetData(APIView):
         data = Testset.objects.all()
         serializer = TestsetSerializer(data, many=True)
         return Response(serializer.data)
+
+
+@api_view(["GET"])
+def get_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="Testfile.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['break_value', 'accel_value', 'speed', 'timestamp'])
+
+    ValueList = (Testset.objects.all()
+                 .values_list('break_value', 'accel_value', 'speed', 'timestamp')
+                 .order_by('timestamp'))
+    for values in ValueList:
+        writer.writerow(values)
+    return response
+
+def get_csv_in_local(request):
+    file_path = 'Testfile.csv'
+
+    with open(file_path, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['break_value', 'accel_value', 'speed', 'timestamp'])
+
+        ValueList = Testset.objects.all().values_list('break_value', 'accel_value', 'speed', 'timestamp').order_by(
+            'timestamp')
+        for values in ValueList:
+            writer.writerow(values)
+
+    return HttpResponse("CSV file has been created successfully.", content_type="text/plain")
