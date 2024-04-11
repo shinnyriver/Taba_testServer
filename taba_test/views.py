@@ -130,29 +130,38 @@ class TestsetData(APIView):
 
 @api_view(["GET"])
 def get_csv(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="Testfile.csv"'
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="Testfile.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['break_value', 'accel_value', 'speed', 'timestamp'])
+    writer.writerow(["break_value", "accel_value", "speed", "timestamp"])
 
-    ValueList = (Testset.objects.all()
-                 .values_list('break_value', 'accel_value', 'speed', 'timestamp')
-                 .order_by('timestamp'))
+    ValueList = (
+        Testset.objects.all()
+        .values_list("break_value", "accel_value", "speed", "timestamp")
+        .order_by("timestamp")
+    )
     for values in ValueList:
         writer.writerow(values)
     return response
 
+
+@api_view(["GET"])
 def get_csv_in_local(request):
-    file_path = 'Testfile.csv'
+    file_path = "Testfile.csv"
 
-    with open(file_path, mode='w', newline='') as file:
+    with open(file_path, mode="w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(['break_value', 'accel_value', 'speed', 'timestamp'])
+        writer.writerow(["break_value", "accel_value", "speed", "timestamp"])
 
-        ValueList = Testset.objects.all().values_list('break_value', 'accel_value', 'speed', 'timestamp').order_by(
-            'timestamp')
+        ValueList = (
+            Testset.objects.all()
+            .values_list("break_value", "accel_value", "speed", "timestamp")
+            .order_by("timestamp")
+        )
         for values in ValueList:
             writer.writerow(values)
 
-    return HttpResponse("CSV file has been created successfully.", content_type="text/plain")
+    return HttpResponse(
+        "CSV file has been created successfully.", content_type="text/plain"
+    )

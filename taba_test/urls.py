@@ -4,11 +4,12 @@ from .views import (
     AccelPressureData,
     BreakPressureData,
     CalibrationData,
-    get_csv_in_local, SensorCalibrationData,
+    get_csv_in_local,
+    SensorCalibrationData,
     SpeedData,
     PressureData,
     TestsetData,
-    get_csv
+    get_csv,
 )
 
 urlpatterns = [
