@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Pressure, Pressure_Accel, Pressure_Break, Speed
+from .models import Pressure, Pressure_Accel, Pressure_Break, Speed, Testset
 
 
 @admin.register(Pressure_Accel)
@@ -28,3 +28,10 @@ class PressureAdmin(admin.ModelAdmin):
     list_display = ("break_value", "accel_value", "timestamp")
     list_filter = ("timestamp",)
     search_fields = ("break_value", "accel_value", "timestamp")
+
+
+@admin.register(Testset)
+class TestsetAdmin(admin.ModelAdmin):
+    list_display = ("break_value", "accel_value", "speed", "timestamp")
+    list_filter = ("timestamp",)
+    search_fields = ("break_value", "accel_value", "speed", "timestamp")

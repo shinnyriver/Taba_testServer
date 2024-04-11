@@ -55,9 +55,9 @@ class Calibration(models.Model):
     def __str__(self):
         return f"Break Pressure {self.break_value} Accel Pressure in Pa at {self.accel_value}"
 
+
 class Testset(models.Model):
     break_value = models.FloatField(help_text="Break")
     accel_value = models.FloatField(help_text="Accel")
     speed = models.FloatField(help_text="Speed")
     timestamp = models.DateTimeField(auto_now_add=True)
-

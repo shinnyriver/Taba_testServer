@@ -3,9 +3,11 @@ from django.urls import path
 from .views import (
     AccelPressureData,
     BreakPressureData,
-    CalibrationData, SensorCalibrationData,
+    CalibrationData,
+    SensorCalibrationData,
     SpeedData,
-    PressureData, TestsetData,
+    PressureData,
+    TestsetData,
 )
 
 urlpatterns = [

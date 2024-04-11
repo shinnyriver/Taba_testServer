@@ -115,6 +115,7 @@ class SensorCalibrationData(APIView):
 
         return Response(result)
 
+
 class TestsetData(APIView):
     def post(self, request, *args, **kwargs):
         serializer = TestsetSerializer(data=request.data)
@@ -127,4 +128,3 @@ class TestsetData(APIView):
         data = Testset.objects.all()
         serializer = TestsetSerializer(data, many=True)
         return Response(serializer.data)
-
