@@ -154,12 +154,12 @@ def get_csv_in_local(request):
         writer = csv.writer(file)
         writer.writerow(["break_value", "accel_value", "speed", "timestamp"])
 
-        ValueList = (
+        DataList = (
             Testset.objects.all()
             .values_list("break_value", "accel_value", "speed", "timestamp")
             .order_by("timestamp")
         )
-        for values in ValueList:
+        for values in DataList:
             writer.writerow(values)
 
     return HttpResponse(
